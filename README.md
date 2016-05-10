@@ -27,3 +27,16 @@ PASS: Ruby up-to-date
 ```bash
 curl -s https://www.ruby-lang.org/en/downloads/ | pup ':parent-of(:contains("Stable releases")) a[href*="ruby-lang.org/pub/ruby/"] text{}' | tr '\n' ' ' | ruby -e 'current = RUBY_VERSION; puts "Ruby version: #{current}"; stables = gets.gsub("Ruby", "").split; update = !stables.include?(current); puts update ? "FAIL: Update Ruby to one of #{stables}" : "PASS: Ruby up-to-date"; exit !update'
 ```
+
+## Download all versions of a gem
+For rack-zippy gem:
+
+```bash
+gem=rack-zippy # Replace name of gem
+versions=($(gem search $gem --all --remote | grep -o '\((.*)\)$' | tr -d '(),'))
+
+for version in "${versions[@]}"
+do
+  gem fetch $gem --version $version
+done
+```
