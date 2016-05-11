@@ -33,9 +33,9 @@ For rack-zippy gem:
 
 ```bash
 gem=rack-zippy # Replace name of gem
-versions=($(gem search $gem --all --remote | grep -o '\((.*)\)$' | tr -d '(),'))
+versions=`gem search $gem --all --remote | grep -o '\((.*)\)$' | tr -d '(),'`
 
-for version in "${versions[@]}"
+for version in $versions
 do
   gem fetch $gem --version $version
 done
